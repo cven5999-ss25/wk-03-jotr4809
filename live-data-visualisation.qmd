@@ -17,6 +17,7 @@ execute:
 library(readr)
 library(dplyr)
 library(ggplot2)
+library(ggthemes)
 
 # An R Package to work with model outputs
 
@@ -92,6 +93,16 @@ Main aesthetic mappings:
 -   shape
 -   size
 -   alpha (Transparency)
+-   Pipe: Ctrl / Cmd + Shift + M
+
+```{r}
+ggplot(data = global_waste_data_kg_year, 
+       mapping = aes(x = gdp,
+                     y = capita_kg_year, 
+                     color = income_id,
+                     shape = income_id)) + #agrega colores en base a una variable 
+  geom_point() 
+```
 
 ## Scaling
 
@@ -99,11 +110,31 @@ All functions that adapt the scale start with `scale_` followed by the aesthetic
 
 ### Axis scales
 
+```{r}
+ggplot(data = global_waste_data_kg_year,
+       mapping = aes(x = gdp,
+                     y = capita_kg_year,
+                     color = income_id,
+                     shape = income_id))+
+  geom_point() + 
+  scale_y_continuous(breaks = seq(0, 1400, 200), limits = c(0, 1400)) + #c es de combine 
+  scale_x_log10(labels = scales::label_log()) # los :: son para llamar funciones de una misma libreria 
+```
+
 ### Color scales
 
 -   scale_color_brewer()
 
 ```{r}
+ggplot(data = global_waste_data_kg_year,
+       mappin = aes(x = gdp,
+                    y = capita_kg_year, 
+                    color = income_id,
+                    shape = income_id)) +
+  geom_point() +
+  scale_y_continuous(breaks = seq(0, 1400, 200), limits = c(0, 1400)) +
+  scale_x_log10(labels = scales::label_log()) + 
+  scale_color_brewer(type = "qual", palette = "Set2") # ggthemes agrega mas colores como colorblind 
 
 ```
 
@@ -111,8 +142,17 @@ All functions that adapt the scale start with `scale_` followed by the aesthetic
 
 ```{r}
 
-my_colors <- c("#ED6D37", "#901C6C", "#18A5C5", "#A6CE8F")
+my_colors <- c("#ED6D37", "#901C6C", "#18A5C5", "#A6CE8F") # creacion del objeto para usarlo despues
 
+ggplot(data = global_waste_data_kg_year,
+       mappin = aes(x = gdp,
+                    y = capita_kg_year, 
+                    color = income_id,
+                    shape = income_id)) +
+  geom_point() +
+  scale_y_continuous(breaks = seq(0, 1400, 200), limits = c(0, 1400)) +
+  scale_x_log10(labels = scales::label_log()) +
+  scale_color_manual(values = my_colors)
 
 ```
 
@@ -127,9 +167,9 @@ ggplot(data = global_waste_data_kg_year,
                      color = income_id,
                      shape = income_id)) +
   geom_point(size = 3, alpha = 3/4) +
-  geom_smooth(method = "lm", se = FALSE) +
+  geom_smooth(method = "lm", se = FALSE) + 
   
-  # https://scales.r-lib.org/reference/label_log.html
+  # https://scales.r-lib.org/reference/label_log.html lm linear module, se standar error excluded. 
   scale_x_log10(labels = scales::label_log(), limits = c(800, 150000))  +
   scale_y_continuous(breaks = seq(0, 1400, 200), limits = c(0, 1400)) +
 
@@ -154,7 +194,7 @@ ggplot(data = global_waste_data_kg_year,
               se = FALSE, 
               color = "gray20", 
               linetype = "longdash") +
-  geom_label(data = global_waste_data_kg_year_filter,
+  geom_label(data = global_waste_data_kg_year_filter, #labels de antes
             mapping = aes(label = country_name)) +
   
   # https://scales.r-lib.org/reference/label_log.html
