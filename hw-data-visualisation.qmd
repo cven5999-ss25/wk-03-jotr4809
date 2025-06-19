@@ -8,6 +8,11 @@ execute:
 editor: visual
 editor_options: 
   chunk_output_type: console
+author: Daniel Trujillo
+date: "`r format(Sys.Date(), '%d %B %Y')`"
+output:
+  html_document: 
+    toc: true
 ---
 
 # Task 0: Load R packages
@@ -22,8 +27,9 @@ editor_options:
 library(gapminder)
 library(ggplot2)
 library(dplyr)
-# library(sf)
-# library(rnaturalearth)
+library(sf)
+#install.packages("terra")
+#library(rnaturalearth)
 ```
 
 # Task 1: Data import
@@ -130,6 +136,15 @@ gapminder_summary_continent_year <- read_rds(here::here("data/gapminder-summary-
 -   life expectancy to the y-axis
 -   continent to color using the `fill = continent` argument inside `aes()`
 
+```{r}
+ggplot(data = gapminder_yr_2007,
+       mapping = aes(x = continent,
+                     y = lifeExp, 
+                     fill = continent)) + 
+  geom_boxplot(outlier.shape = NA)
+
+```
+
 3.  Do not display (ignore) the outliers in the plot. **Note: Use a search engine or an AI tool to find the solution and add the link to the solution you have found.**
 
 4.  Run the code contained in the code chunk and fix any errors
@@ -143,6 +158,11 @@ ggplot(data = gapminder_yr_2007,
 ```
 
 5.  What are the data types of the three variables used for aesthetic mappings?
+    -   x axes has a non-numerical categorical variable that divides the variables into groups, in this case the 5 different continents.
+
+    -   y axe has a numerical continues values for the life expectancy of the population in average.
+
+    -   And the color uses again the data type of the continent which is non-numerical categorical values.
 
 ## Timeseries plot
 
@@ -153,6 +173,15 @@ ggplot(data = gapminder_yr_2007,
 -   year to the x-axis
 -   life expectancy to the y-axis
 -   continent to color using the `color = continent` argument inside `aes()`
+
+```{r}
+ggplot(data = gapminder_summary_continent_year, 
+       mapping = aes(x = year,
+                     y = lifeExp, 
+                     color = continent)) + 
+  geom_line() +
+  geom_point()
+```
 
 3.  Run the code contained in the code chunk and fix any errors
 
@@ -176,6 +205,13 @@ ggplot(data = gapminder_summary_continent_year,
 -   continent to the x-axis
 -   count to the y-axis
 
+```{r}
+ggplot(data = gapminder_summary_continent_2007, 
+       mapping = aes(x = continent,
+                     y = count)) +
+  geom_col()
+```
+
 3.  Run the code contained in the code chunk and fix any errors
 
 ```{r}
@@ -193,6 +229,13 @@ ggplot(data = gapminder_summary_continent_2007,
 
 -   continent to the x-axis
 
+```{r}
+ggplot( data = gapminder_yr_2007, 
+        mapping = aes(x = continent)) +
+  geom_bar()
+
+```
+
 3.  Run the code contained in the code chunk and fix any errors
 
 ```{r}
@@ -202,6 +245,7 @@ ggplot(data = gapminder_yr_2007,
 ```
 
 4.  The plot is identical to the plot created with `geom_col()`. Why? What does the `geom_bar()` function do? Write your text here:
+    -   In this case, geom_bar() does the same graphic. but the difference is that this function makes the height of the bar proportional to the number of cases in each group. In fact is used when we have raw data and want to count occurrences. While geom_col() is used to plot specific data providing the data for the y axes, usually when we have already treated the data and want to be more specific with the shown data.
 
 ## Histogram
 
@@ -222,6 +266,14 @@ ggplot(data = gapminder_yr_2007,
 5.  Run the code contained in the code chunk and fix any errors
 
 ```{r}
+ggplot(data = gapminder_yr_2007, 
+       mapping = aes(x = lifeExp, 
+                   fill = continent)) + 
+  geom_histogram(col = "grey30",
+                 breaks = seq(40, 85, 2.5))
+```
+
+```{r}
 ggplot(data = gapminder_yr_2007,
        mapping = aes(x = lifeExp, 
                      fill = continent)) +
@@ -230,7 +282,11 @@ ggplot(data = gapminder_yr_2007,
 
 6.  Describe how the `geom_histogram()` function is similar to the `geom_bar()` function.
 
+    -   Both graphics are similar on how they represent the data because they are using rectangles boxes. But geom_histogram() Is actually putting every rectangle just next to the other and representing into a more statistical representation like the gauss bell. Using the frequency of appearance of a variable.
+
 7.  What happens by adding the 'breaks' argument? Play around with the numbers inside of `seq()` to see what changes. Describe what you observe here:
+
+    -   it distributes the data between a range of 40 as a minimum and 85 as a maximum, with a sepparation of 2.5, so that means that would have 18 levels of bars, been the first level from 40 to 42,5 and going on like that adding another 2.5 every level until it gets to 85.
 
 ## Scatterplot and faceting
 
@@ -248,6 +304,8 @@ ggplot(data = gapminder_yr_2007,
 4.  Run the code contained in the code chunk and fix any errors
 
 5.  Describe in your own words what the `facet_wrap()` function does
+
+    -   it divides the type of data into different graphics. makes it easier for visualization so we can actually look the behavor of the variable depending on the continent in separated graphics
 
 6.  Adapt the scaling of the size by adding `scale_size(range = c(2, 12))` on the next line
 
@@ -279,6 +337,8 @@ ggplot(data = gapminder_yr_2007,
 
 4.  What is stored in the `country_colors` object? Find out by executing the object in the Console (type it to the Console and hit enter). Do the same again, but with a question mark `?country_colors`
 
+    -   Each country has a specific color code associated to its region. So in this case africa has a main color of brow, america its red, Asia is purple, Europe is green and Oceania is blue, and each country has its own specific color tone in that range of color.
+
 5.  Render the document and fix any errors
 
 ```{r}
@@ -289,7 +349,7 @@ ggplot(data = gapminder,
                      color = country)) +
   geom_line(lwd = 1, show.legend = FALSE) + 
   facet_wrap(~continent) +
-  # scale_color_manual(values = country_colors) +
+  scale_color_manual(values = country_colors) +
   theme_minimal()
 ```
 
@@ -310,16 +370,17 @@ The code chunk below contains code for a world map that shows countries by incom
 # library(sf)
 # library(rnaturalearth)
 
-world <- ne_countries(scale = "small", returnclass = "sf")
 
-world |> 
-  mutate(income_grp = factor(income_grp, ordered = T)) |> 
-  ggplot() + 
-  geom_sf(aes(fill = income_grp)) +
-  theme_void() +
-  theme(legend.position = "top") +
-  labs(fill = "Income Group:") +
-  guides(fill = guide_legend(nrow = 2, byrow = TRUE))
+#world <- ne_countries(scale = "small", returnclass = "sf")
+
+#world |> 
+#  mutate(income_grp = factor(income_grp, ordered = T)) |> 
+#  ggplot() + 
+#  geom_sf(aes(fill = income_grp)) +
+#  theme_void() +
+#  theme(legend.position = "top") +
+#  labs(fill = "Income Group:") +
+#  guides(fill = guide_legend(nrow = 2, byrow = TRUE))
 ```
 
 The code for the code chunk is taken from here: More here: https://bookdown.org/alhdzsz/data_viz_ir/maps.html
