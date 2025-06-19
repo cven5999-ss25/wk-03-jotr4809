@@ -25,5 +25,4 @@ Some examples of popular and extensive Open Data repositories are:
 -   relevant to the wider topics of Global Engineering, Development, etc.
 
 2.  Describe why you have chosen this data. We will create a repository for your data in another week.
-
-<!--# Delete this comment and add your answer here  -->
+    -   I chose a dataset that has Cardiovascular information about people that has heart disease. Making it relevant to analyze the relation between bad habits and health status and heart diseases. Important to diagnose which habits are most important and relevant to produce a High pressure
