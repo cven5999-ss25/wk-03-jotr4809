@@ -12,15 +12,15 @@ Learning reflections are part of your weekly homework and have a weight of 20% o
 
 # Lecture
 
-<!--# Add your reflections on the lecture of this week here -->
+This week's lecture was really helpful to understand how does the plotting libraries work and a good way to represent the data into an aesthetic format. Making the visualization easier for the understading of the data and what is actually telling us. Specially when we are working with a huge amount of data.
 
 # Homework Assignment
 
-<!--# Add your reflections on the homework programming assignment here -->
+The homework was really straightforward, just doing the same thing that we did during the lecture. There was just one part, the part of the choroplet graphics that didn't work for me due to a problem with the libraries. But I looked into the examples of the library and I could see the graphics That I was supposed to graphic in there. About the mapamundi and the association with the different variables. I was kind of disappointed with myself because I couldn't fix the problem by my own. However It help me a lot to understand the workflow of posit. Regarding the visualization, I think that there are tons of ways to represent a group of data. It's just about practicing and trying new ways to represent it.
 
 # Readings
 
-<!--# Add your reflections on the required readings here -->
+This actually was really good to understand how to represent data into a correct format and all the possibilities that we have.
 
 # Submit learning reflections
 
